@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  coap-server-app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: coap-server-app
+    ports:
+      - "5683:5683/udp"
+      - "5684:5684/udp"
+    environment:
+      PSK_IDENTITY: "identity"
+      PSK_SECRET: "qwerty"
+    restart: unless-stopped

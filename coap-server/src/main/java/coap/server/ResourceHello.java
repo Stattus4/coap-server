@@ -1,4 +1,4 @@
-package com.example;
+package coap.server;
 
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;

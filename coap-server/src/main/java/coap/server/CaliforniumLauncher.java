@@ -1,4 +1,4 @@
-package com.example;
+package coap.server;
 
 public class CaliforniumLauncher {
 

@@ -1,4 +1,4 @@
-package com.example;
+package coap.server;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;

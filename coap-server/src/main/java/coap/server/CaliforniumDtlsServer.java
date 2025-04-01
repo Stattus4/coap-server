@@ -1,4 +1,4 @@
-package com.example;
+package coap.server;
 
 import java.io.File;
 import java.net.InetSocketAddress;
@@ -19,7 +19,8 @@ import org.eclipse.californium.scandium.dtls.cipher.CipherSuite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.example.CredentialsUtil.Mode;
+import coap.util.CredentialsUtil;
+import coap.util.CredentialsUtil.Mode;
 
 public class CaliforniumDtlsServer extends CoapServer {
 

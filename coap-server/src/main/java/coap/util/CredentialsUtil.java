@@ -1,4 +1,4 @@
-package com.example;
+package coap.util;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;

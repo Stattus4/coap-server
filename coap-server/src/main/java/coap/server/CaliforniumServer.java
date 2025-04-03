@@ -2,7 +2,6 @@ package coap.server;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.SocketException;
 
 import org.eclipse.californium.core.CoapServer;
 import org.eclipse.californium.core.config.CoapConfig;
@@ -23,11 +22,6 @@ public class CaliforniumServer extends CoapServer {
 		UdpConfig.register();
 	}
 
-	public CaliforniumServer() throws SocketException {
-		add(new MyIpResource(MyIpResource.RESOURCE_NAME, true));
-		add(new ResourceHello("hello"));
-	}
-
 	public static void main(String[] args) {
 		try {
 			int port = Configuration.getStandard().get(CoapConfig.COAP_PORT);
@@ -36,6 +30,7 @@ public class CaliforniumServer extends CoapServer {
 
 			CaliforniumServer server = new CaliforniumServer();
 
+			server.addResources();
 			server.addEndpoints(true, false, port);
 			server.start();
 
@@ -44,7 +39,7 @@ public class CaliforniumServer extends CoapServer {
 			}));
 
 			logger.info("Started CaliforniumServer");
-		} catch (SocketException e) {
+		} catch (Exception e) {
 			logger.error("Failed to start: {}", e.getMessage(), e);
 		}
 	}
@@ -64,5 +59,12 @@ public class CaliforniumServer extends CoapServer {
 				addEndpoint(builder.build());
 			}
 		}
+	}
+
+	private void addResources() {
+		add(new MyIpResource(MyIpResource.RESOURCE_NAME, true));
+		add(new ResourceHello("hello"));
+		add(new ResourceInfo("info", this));
+		add(new ResourceReadings("readings"));
 	}
 }

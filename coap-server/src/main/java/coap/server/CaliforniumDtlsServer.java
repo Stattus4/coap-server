@@ -8,6 +8,7 @@ import java.util.List;
 import org.eclipse.californium.core.CoapServer;
 import org.eclipse.californium.core.config.CoapConfig;
 import org.eclipse.californium.core.network.CoapEndpoint;
+import org.eclipse.californium.core.server.resources.MyIpResource;
 import org.eclipse.californium.elements.config.Configuration;
 import org.eclipse.californium.elements.config.Configuration.DefinitionsProvider;
 import org.eclipse.californium.scandium.DTLSConnector;
@@ -57,7 +58,10 @@ public class CaliforniumDtlsServer extends CoapServer {
 
 		CaliforniumDtlsServer server = new CaliforniumDtlsServer();
 
+		server.add(new MyIpResource(MyIpResource.RESOURCE_NAME, true));
 		server.add(new ResourceHello("hello"));
+		server.add(new ResourceInfo("info", server));
+		server.add(new ResourceReadings("readings"));
 
 		DtlsConnectorConfig.Builder builder = DtlsConnectorConfig.builder(configuration)
 				.setAddress(new InetSocketAddress(dtlsPort));

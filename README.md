@@ -55,7 +55,7 @@ java -jar target/coap-server-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 ## Environment Variables
 
 `PSK_IDENTITY` (Default value: `identity`)
-`PSK_SECRET` (Default value: `secret`)
+`PSK_SECRET` (Default value: `qwerty`)
 
 **Warning:** The default values for `PSK_IDENTITY` and `PSK_SECRET` are provided for testing purposes only. In a production environment, it is crucial to generate and use strong, unique values.
 

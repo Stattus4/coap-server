@@ -13,7 +13,7 @@ public class CaliforniumLauncher {
 
 		new Thread(() -> {
 			try {
-				CaliforniumDtlsServer.main(args);
+				CaliforniumSecureServer.main(args);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

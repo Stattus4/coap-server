@@ -118,7 +118,7 @@ public class CredentialsUtil {
 		if (envPskSecret != null && !envPskSecret.isEmpty()) {
 			PSK_SECRET = envPskSecret.getBytes(StandardCharsets.UTF_8);
 		} else {
-			PSK_SECRET = "secret".getBytes(StandardCharsets.UTF_8);
+			PSK_SECRET = "qwerty".getBytes(StandardCharsets.UTF_8);
 		}
 	}
 

@@ -20,7 +20,7 @@ RUN apt-get update && \
 WORKDIR /app
 
 COPY --from=builder /app/target/coap-server-0.0.1-SNAPSHOT-jar-with-dependencies.jar coap-server.jar
-COPY --from=builder /app/target/cf-client-4.0.0-M3.jar cf-client.jar
+COPY --from=builder /app/target/cf-client.jar .
 
 EXPOSE 5683/udp 5684/udp
 

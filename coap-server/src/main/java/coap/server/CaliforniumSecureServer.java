@@ -27,7 +27,7 @@ import coap.util.CredentialsUtil.Mode;
 
 public class CaliforniumSecureServer extends CoapServer {
 
-	private static final Logger logger = LoggerFactory.getLogger(CaliforniumSecureServer.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CaliforniumSecureServer.class);
 
 	private static final File CONFIG_FILE = new File("Californium3.properties");
 	private static final String CONFIG_HEADER = "Californium CoAP Properties";
@@ -52,7 +52,7 @@ public class CaliforniumSecureServer extends CoapServer {
 
 	public static void main(String[] args) {
 		try {
-			logger.info("Starting CaliforniumSecureServer ...");
+			LOGGER.info("Starting CaliforniumSecureServer ...");
 
 			Configuration configuration = Configuration.createWithFile(CONFIG_FILE, CONFIG_HEADER, DEFAULTS);
 			Configuration.setStandard(configuration);
@@ -87,9 +87,9 @@ public class CaliforniumSecureServer extends CoapServer {
 				server.stop();
 			}));
 
-			logger.info("Started CaliforniumSecureServer");
+			LOGGER.info("Started CaliforniumSecureServer");
 		} catch (Exception e) {
-			logger.error("Failed to start CaliforniumSecureServer: {}", e.getMessage(), e);
+			LOGGER.error("Failed to start CaliforniumSecureServer: {}", e.getMessage(), e);
 		}
 	}
 

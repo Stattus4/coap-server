@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 public class CaliforniumServer extends CoapServer {
 
-	private static final Logger logger = LoggerFactory.getLogger(CaliforniumServer.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CaliforniumServer.class);
 
 	private static final File CONFIG_FILE = new File("Californium3.properties");
 	private static final String CONFIG_HEADER = "Californium CoAP Properties";
@@ -34,7 +34,7 @@ public class CaliforniumServer extends CoapServer {
 
 	public static void main(String[] args) {
 		try {
-			logger.info("Starting CaliforniumServer ...");
+			LOGGER.info("Starting CaliforniumServer ...");
 
 			Configuration configuration = Configuration.createWithFile(CONFIG_FILE, CONFIG_HEADER, DEFAULTS);
 			Configuration.setStandard(configuration);
@@ -56,9 +56,9 @@ public class CaliforniumServer extends CoapServer {
 				server.stop();
 			}));
 
-			logger.info("Started CaliforniumServer");
+			LOGGER.info("Started CaliforniumServer");
 		} catch (Exception e) {
-			logger.error("Failed to start CaliforniumServer: {}", e.getMessage(), e);
+			LOGGER.error("Failed to start CaliforniumServer: {}", e.getMessage(), e);
 		}
 	}
 

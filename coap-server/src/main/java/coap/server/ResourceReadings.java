@@ -9,14 +9,14 @@ import org.slf4j.LoggerFactory;
 
 public class ResourceReadings extends CoapResource {
 
-	private static final Logger logger = LoggerFactory.getLogger(ResourceHello.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResourceHello.class);
 
 	public ResourceReadings(String name) {
 		super(name);
 
 		getAttributes().setTitle("Resource Readings");
 
-		logger.info("CoapResource added");
+		LOGGER.info("CoapResource added");
 	}
 
 	@Override
@@ -26,19 +26,19 @@ public class ResourceReadings extends CoapResource {
 			JSONObject jsonRequest = new JSONObject(payload);
 			String deviceId = jsonRequest.getString("deviceId");
 
-			logger.info("Success - SourceContext:{} RequestCode:{} RequestOptions:{}",
+			LOGGER.info("Success - SourceContext:{} RequestCode:{} RequestOptions:{}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
 					exchange.getRequestOptions().toString());
 
 			exchange.respond(ResponseCode.CREATED);
 		} catch (org.json.JSONException e) {
-			logger.info("Error - SourceContext:{} RequestCode:{} RequestOptions:{} - Message:{}",
+			LOGGER.info("Error - SourceContext:{} RequestCode:{} RequestOptions:{} - Message:{}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
 					exchange.getRequestOptions().toString(), e.getMessage());
 
 			exchange.respond(ResponseCode.BAD_REQUEST, "Invalid JSON format.");
 		} catch (Exception e) {
-			logger.info("Error - SourceContext:{} RequestCode:{} RequestOptions:{} - Message:{}",
+			LOGGER.info("Error - SourceContext:{} RequestCode:{} RequestOptions:{} - Message:{}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
 					exchange.getRequestOptions().toString(), e.getMessage());
 

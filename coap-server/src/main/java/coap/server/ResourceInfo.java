@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 public class ResourceInfo extends CoapResource {
 
-	private static final Logger logger = LoggerFactory.getLogger(ResourceInfo.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResourceInfo.class);
 	private final CoapServer server;
 
 	public ResourceInfo(String name, CoapServer server) {
@@ -24,7 +24,7 @@ public class ResourceInfo extends CoapResource {
 
 		getAttributes().setTitle("Resource Info");
 
-		logger.info("CoapResource added");
+		LOGGER.info("CoapResource added");
 	}
 
 	@Override
@@ -53,13 +53,13 @@ public class ResourceInfo extends CoapResource {
 			});
 			jsonResponse.put("resources", resourcesArray);
 
-			logger.info("Success - SourceContext:{} RequestCode:{} RequestOptions:{}",
+			LOGGER.info("Success - SourceContext:{} RequestCode:{} RequestOptions:{}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
 					exchange.getRequestOptions().toString());
 
 			exchange.respond(ResponseCode.CONTENT, jsonResponse.toString(), MediaTypeRegistry.APPLICATION_JSON);
 		} catch (Exception e) {
-			logger.info("Error - SourceContext:{} RequestCode:{} RequestOptions:{} - Message:{}",
+			LOGGER.info("Error - SourceContext:{} RequestCode:{} RequestOptions:{} - Message:{}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
 					exchange.getRequestOptions().toString(), e.getMessage());
 

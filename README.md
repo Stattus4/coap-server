@@ -85,7 +85,7 @@ java -jar target/coap-server-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 | --- | --- |
 | `/secure-hello` | GET |
 
-### CoAP + DTLS 1.2 (5683/UDP)
+### CoAP + DTLS 1.2 (5684/UDP)
 
 | Resource | Method |
 | --- | --- |

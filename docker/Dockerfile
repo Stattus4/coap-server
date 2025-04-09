@@ -21,6 +21,7 @@ WORKDIR /app
 
 COPY --from=builder /app/target/coap-server-0.0.1-SNAPSHOT-jar-with-dependencies.jar coap-server.jar
 COPY --from=builder /app/target/cf-client.jar .
+COPY --from=builder /app/src/main/resources/certs certs
 
 EXPOSE 5683/udp 5684/udp
 

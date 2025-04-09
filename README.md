@@ -1,4 +1,3 @@
-README.txt
 ## About
 
 This Proof of Concept (PoC) demonstrates a basic Constrained Application Protocol (CoAP) server implementation using Eclipse Californium.

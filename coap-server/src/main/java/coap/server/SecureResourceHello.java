@@ -36,7 +36,37 @@ class SecureResourceHello extends CoapResource {
 					exchange.getRequestOptions().toString(), ResponseCode.UNAUTHORIZED);
 
 			exchange.respond(ResponseCode.UNAUTHORIZED);
-			
+
+			return;
+		}
+
+		OSCoreCtx oscoreCtx = oscoreCtxDb.getContext(serverRid);
+		int offset = oscoreCtx.getRecipientReplaySize() - Integer.numberOfLeadingZeros(oscoreCtx.getRecipientReplayWindow());
+
+		StringBuilder payload = new StringBuilder();
+		payload.append("oscoreCtx.getIdContext(): " +  Utils.toHexString(oscoreCtx.getIdContext()));
+		payload.append("\noscoreCtx.getLowestRecipientSeq(): " + String.valueOf(oscoreCtx.getLowestRecipientSeq()));
+		payload.append("\noscoreCtx.getRecipientReplaySize(): " + String.valueOf(oscoreCtx.getRecipientReplaySize()));
+		payload.append("\noscoreCtx.getRecipientReplayWindow(): " + String.valueOf(oscoreCtx.getRecipientReplayWindow()));
+		payload.append("\noffset = oscoreCtx.getRecipientReplaySize() - oscoreCtx.getRecipientReplayWindow(): " + String.valueOf(offset));
+
+		LOGGER.info("Success - SourceContext:{} RequestCode:{} RequestOptions:{}",
+				exchange.getSourceContext().toString(), exchange.getRequestCode(),
+				exchange.getRequestOptions().toString());
+
+		exchange.setMaxAge(30);
+		exchange.respond(ResponseCode.CONTENT, payload.toString(), MediaTypeRegistry.TEXT_PLAIN);
+	}
+
+	@Override
+	public void handlePOST(CoapExchange exchange) {
+		if (! exchange.getRequestOptions().hasOscore()) {
+			LOGGER.info("Error - SourceContext:{} RequestCode:{} RequestOptions:{} - Message:{}",
+					exchange.getSourceContext().toString(), exchange.getRequestCode(),
+					exchange.getRequestOptions().toString(), ResponseCode.UNAUTHORIZED);
+
+			exchange.respond(ResponseCode.UNAUTHORIZED);
+
 			return;
 		}
 

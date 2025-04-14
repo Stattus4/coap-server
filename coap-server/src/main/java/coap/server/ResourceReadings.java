@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 
 public class ResourceReadings extends CoapResource {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ResourceHello.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ResourceReadings.class);
 
 	public ResourceReadings(String name) {
 		super(name);

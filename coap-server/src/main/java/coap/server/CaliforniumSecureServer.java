@@ -83,9 +83,7 @@ public class CaliforniumSecureServer extends CoapServer {
 			server.addEndpoint(coapBuilder.build());
 			server.start();
 
-			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-				server.stop();
-			}));
+			Runtime.getRuntime().addShutdownHook(new Thread(server::stop));
 
 			LOGGER.info("Started CaliforniumSecureServer");
 		} catch (Exception e) {

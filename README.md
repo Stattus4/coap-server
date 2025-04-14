@@ -169,5 +169,8 @@ hkdf_alg,integer,-10
 ./coap-client -m get 'coap://localhost/hello'
 ```
 ```bash
+./coap-client -m post 'coap://localhost/oscore-context'
+```
+```bash
 ./coap-client -m get 'coap://localhost/secure-hello' -E ~/coap-client-oscore.conf,/tmp/seq_file
 ```

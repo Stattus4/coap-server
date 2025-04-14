@@ -50,8 +50,11 @@ class SecureResourceHello extends CoapResource {
 		payload.append("\noscoreCtx.getRecipientReplaySize(): " + String.valueOf(oscoreCtx.getRecipientReplaySize()));
 		payload.append(
 				"\noscoreCtx.getRecipientReplayWindow(): " + String.valueOf(oscoreCtx.getRecipientReplayWindow()));
-		payload.append("\noffset = oscoreCtx.getRecipientReplaySize() - oscoreCtx.getRecipientReplayWindow(): "
-				+ String.valueOf(offset));
+		payload.append("\nInteger.numberOfLeadingZeros(oscoreCtx.getRecipientReplayWindow()): "
+				+ String.valueOf(Integer.numberOfLeadingZeros(oscoreCtx.getRecipientReplayWindow())));
+		payload.append(
+				"\noffset = oscoreCtx.getRecipientReplaySize() - Integer.numberOfLeadingZeros(oscoreCtx.getRecipientReplayWindow()): "
+						+ String.valueOf(offset));
 
 		LOGGER.info("Success - SourceContext:{} RequestCode:{} RequestOptions:{}",
 				exchange.getSourceContext().toString(), exchange.getRequestCode(),

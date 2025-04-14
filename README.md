@@ -77,6 +77,7 @@ java -jar target/coap-server-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 | --- | --- |
 | `/hello` | GET |
 | `/info` | GET |
+| `/oscore-context` | POST |
 | `/readings` | POST |
 
 ### CoAP + OSCORE (5683/UDP)

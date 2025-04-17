@@ -1,4 +1,4 @@
-package coap.server;
+package coapproxy.server.resources;
 
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
@@ -16,14 +16,16 @@ public class ResourceOscoreContext extends CoapResource {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResourceOscoreContext.class);
 
-	private final HashMapCtxDB oscoreCtxDb;
+	private static byte[] rid = StringUtil.hex2ByteArray("02");
+	private static byte[] id_context = StringUtil.hex2ByteArray("37cbf3210017a2d3");
 
+	private final HashMapCtxDB oscoreCtxDb;
+	
 	public ResourceOscoreContext(String name, HashMapCtxDB oscoreCtxDb) {
 		super(name, true);
+		this.oscoreCtxDb = oscoreCtxDb;
 
 		getAttributes().setTitle("Resource OSCORE Context");
-
-		this.oscoreCtxDb = oscoreCtxDb;
 
 		LOGGER.info("CoapResource added");
 	}
@@ -63,8 +65,6 @@ public class ResourceOscoreContext extends CoapResource {
 		byte[] master_secret = StringUtil.hex2ByteArray("0102030405060708090a0b0c0d0e0f10");
 		byte[] master_salt = StringUtil.hex2ByteArray("9e7ca92223786340");
 		byte[] sid = StringUtil.hex2ByteArray("01");
-		byte[] rid = StringUtil.hex2ByteArray("02");
-		byte[] id_context = StringUtil.hex2ByteArray("37cbf3210017a2d3");
 
 		int MAX_UNFRAGMENTED_SIZE = exchange.advanced().getEndpoint().getConfig()
 				.get(CoapConfig.MAX_RESOURCE_BODY_SIZE);

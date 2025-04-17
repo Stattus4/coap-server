@@ -1,4 +1,4 @@
-package coap.server;
+package coapproxy.server.resources;
 
 import java.util.List;
 

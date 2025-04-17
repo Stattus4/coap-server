@@ -1,11 +1,11 @@
 version: "3.8"
 
 services:
-  coap-server-app:
+  coap-proxy-app:
     build:
       context: ..
       dockerfile: docker/Dockerfile
-    container_name: coap-server-app
+    container_name: coap-proxy-app
     ports:
       - "5683:5683/udp"
       - "5684:5684/udp"

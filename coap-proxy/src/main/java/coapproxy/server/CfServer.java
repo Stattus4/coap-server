@@ -1,4 +1,4 @@
-package coap.server;
+package coapproxy.server;
 
 import java.io.File;
 import java.net.InetSocketAddress;
@@ -15,9 +15,15 @@ import org.eclipse.californium.oscore.OSCoreCoapStackFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CaliforniumServer extends CoapServer {
+import coapproxy.server.resources.ResourceHello;
+import coapproxy.server.resources.ResourceInfo;
+import coapproxy.server.resources.ResourceOscoreContext;
+import coapproxy.server.resources.ResourceReadings;
+import coapproxy.server.resources.SecureResourceHello;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(CaliforniumServer.class);
+public class CfServer extends CoapServer {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(CfServer.class);
 
 	private static final File CONFIG_FILE = new File("Californium3.properties");
 	private static final String CONFIG_HEADER = "Californium CoAP Properties";
@@ -36,7 +42,7 @@ public class CaliforniumServer extends CoapServer {
 
 	public static void main(String[] args) {
 		try {
-			LOGGER.info("Starting CaliforniumServer ...");
+			LOGGER.info("Starting CfServer ...");
 
 			Configuration configuration = Configuration.createWithFile(CONFIG_FILE, CONFIG_HEADER, DEFAULTS);
 			Configuration.setStandard(configuration);
@@ -48,7 +54,7 @@ public class CaliforniumServer extends CoapServer {
 			builder.setConfiguration(configuration);
 			builder.setInetSocketAddress(new InetSocketAddress(coapPort));
 
-			CaliforniumServer server = new CaliforniumServer();
+			CfServer server = new CfServer();
 
 			HashMapCtxDB oscoreCtxDb = new HashMapCtxDB();
 			OSCoreCoapStackFactory.useAsDefault(oscoreCtxDb);
@@ -59,11 +65,11 @@ public class CaliforniumServer extends CoapServer {
 
 			Runtime.getRuntime().addShutdownHook(new Thread(server::stop));
 
-			LOGGER.info("Started CaliforniumServer");
+			LOGGER.info("Started CfServer");
 		} catch (
 
 		Exception e) {
-			LOGGER.error("Failed to start CaliforniumServer: {}", e.getMessage(), e);
+			LOGGER.error("Failed to start CfServer: {}", e.getMessage(), e);
 		}
 	}
 

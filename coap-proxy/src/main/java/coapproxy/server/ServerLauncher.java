@@ -1,11 +1,11 @@
-package coap.server;
+package coapproxy.server;
 
-public class CaliforniumLauncher {
+public class ServerLauncher {
 
 	public static void main(String[] args) {
 		new Thread(() -> {
 			try {
-				CaliforniumServer.main(args);
+				CfServer.main(args);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -13,7 +13,7 @@ public class CaliforniumLauncher {
 
 		new Thread(() -> {
 			try {
-				CaliforniumSecureServer.main(args);
+				CfSecureServer.main(args);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

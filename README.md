@@ -52,13 +52,13 @@ sudo docker compose -f docker/docker-compose.yml up
 git clone https://github.com/Stattus4/coap-server.git
 ```
 ```bash
-cd coap-server/coap-server/
+cd coap-server/coap-proxy/
 ```
 ```bash
 mvn clean package
 ```
 ```bash
-java -jar target/coap-server-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+java -jar target/coap-proxy-0.0.1-jar-with-dependencies.jar
 ```
 
 ## Environment Variables
@@ -101,7 +101,7 @@ java -jar target/coap-server-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 #### Enter Into the Docker Container's Shell
 
 ```bash
-sudo docker exec -it coap-server-app /bin/bash
+sudo docker exec -it coap-proxy-app /bin/bash
 ```
 
 #### Examples

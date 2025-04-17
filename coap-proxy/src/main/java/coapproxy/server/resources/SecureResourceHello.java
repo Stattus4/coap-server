@@ -1,4 +1,4 @@
-package coap.server;
+package coapproxy.server.resources;
 
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.Utils;
@@ -11,35 +11,26 @@ import org.eclipse.californium.oscore.OSCoreCtx;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class SecureResourceHello extends CoapResource {
+public class SecureResourceHello extends CoapResource {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SecureResourceHello.class);
 
+	private static final byte[] rid = StringUtil.hex2ByteArray("02");
+
 	private final HashMapCtxDB oscoreCtxDb;
-	private final byte[] rid = StringUtil.hex2ByteArray("02");
 
 	public SecureResourceHello(String name, HashMapCtxDB oscoreCtxDb) {
 		super(name, true);
-
-		getAttributes().setTitle("Secure Resource Hello");
-
 		this.oscoreCtxDb = oscoreCtxDb;
 
+		getAttributes().setTitle("Secure Resource Hello");
+		getAttributes().setOscoreOnly();
+		
 		LOGGER.info("CoapResource added");
 	}
 
 	@Override
 	public void handleGET(CoapExchange exchange) {
-		if (!exchange.getRequestOptions().hasOscore()) {
-			LOGGER.info("Error - SourceContext:{} RequestCode:{} RequestOptions:{} - Message:{}",
-					exchange.getSourceContext().toString(), exchange.getRequestCode(),
-					exchange.getRequestOptions().toString(), ResponseCode.UNAUTHORIZED);
-
-			exchange.respond(ResponseCode.UNAUTHORIZED);
-
-			return;
-		}
-
 		OSCoreCtx oscoreCtx = oscoreCtxDb.getContext(rid);
 		int offset = oscoreCtx.getRecipientReplaySize()
 				- Integer.numberOfLeadingZeros(oscoreCtx.getRecipientReplayWindow());

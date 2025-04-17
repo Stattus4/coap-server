@@ -1,4 +1,4 @@
-package coap.server;
+package coapproxy.server;
 
 import java.io.File;
 import java.net.InetSocketAddress;
@@ -22,12 +22,15 @@ import org.eclipse.californium.scandium.dtls.cipher.CipherSuite;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import coap.util.CredentialsUtil;
-import coap.util.CredentialsUtil.Mode;
+import coapproxy.server.resources.ResourceHello;
+import coapproxy.server.resources.ResourceInfo;
+import coapproxy.server.resources.ResourceReadings;
+import coapproxy.server.util.CredentialsUtil;
+import coapproxy.server.util.CredentialsUtil.Mode;
 
-public class CaliforniumSecureServer extends CoapServer {
+public class CfSecureServer extends CoapServer {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(CaliforniumSecureServer.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CfSecureServer.class);
 
 	private static final File CONFIG_FILE = new File("Californium3.properties");
 	private static final String CONFIG_HEADER = "Californium CoAP Properties";
@@ -52,7 +55,7 @@ public class CaliforniumSecureServer extends CoapServer {
 
 	public static void main(String[] args) {
 		try {
-			LOGGER.info("Starting CaliforniumSecureServer ...");
+			LOGGER.info("Starting CfSecureServer ...");
 
 			Configuration configuration = Configuration.createWithFile(CONFIG_FILE, CONFIG_HEADER, DEFAULTS);
 			Configuration.setStandard(configuration);
@@ -77,7 +80,7 @@ public class CaliforniumSecureServer extends CoapServer {
 			CoapEndpoint.Builder coapBuilder = new CoapEndpoint.Builder().setConfiguration(configuration)
 					.setConnector(connector);
 
-			CaliforniumSecureServer server = new CaliforniumSecureServer();
+			CfSecureServer server = new CfSecureServer();
 
 			server.addResources();
 			server.addEndpoint(coapBuilder.build());
@@ -85,9 +88,9 @@ public class CaliforniumSecureServer extends CoapServer {
 
 			Runtime.getRuntime().addShutdownHook(new Thread(server::stop));
 
-			LOGGER.info("Started CaliforniumSecureServer");
+			LOGGER.info("Started CfSecureServer");
 		} catch (Exception e) {
-			LOGGER.error("Failed to start CaliforniumSecureServer: {}", e.getMessage(), e);
+			LOGGER.error("Failed to start CfSecureServer: {}", e.getMessage(), e);
 		}
 	}
 

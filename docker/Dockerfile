@@ -2,11 +2,11 @@ FROM maven:3.9.9-eclipse-temurin-21 AS builder
 
 WORKDIR /app
 
-COPY ./coap-server/pom.xml .
+COPY ./coap-proxy/pom.xml .
 
 RUN mvn dependency:resolve
 
-COPY ./coap-server/src ./src
+COPY ./coap-proxy/src ./src
 
 RUN mvn clean package -DskipTests
 

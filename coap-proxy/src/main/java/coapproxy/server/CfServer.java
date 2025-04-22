@@ -15,11 +15,12 @@ import org.eclipse.californium.oscore.OSCoreCoapStackFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import coapproxy.server.resources.OscoreResourceHello;
+import coapproxy.server.resources.OscoreResourceInfo;
 import coapproxy.server.resources.ResourceHello;
 import coapproxy.server.resources.ResourceInfo;
 import coapproxy.server.resources.ResourceOscoreContext;
 import coapproxy.server.resources.ResourceReadings;
-import coapproxy.server.resources.SecureResourceHello;
 
 public class CfServer extends CoapServer {
 
@@ -79,6 +80,7 @@ public class CfServer extends CoapServer {
 		add(new ResourceInfo("info", this));
 		add(new ResourceOscoreContext("oscore-context", oscoreCtxDb));
 		add(new ResourceReadings("readings"));
-		add(new SecureResourceHello("secure-hello", oscoreCtxDb));
+		add(new OscoreResourceHello("oscore-hello", true));
+		add(new OscoreResourceInfo("oscore-info", oscoreCtxDb));
 	}
 }

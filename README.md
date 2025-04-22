@@ -84,7 +84,8 @@ java -jar target/coap-proxy-0.0.1-jar-with-dependencies.jar
 
 | Resource | Method |
 | --- | --- |
-| `/secure-hello` | GET |
+| `/oscore-hello` | GET |
+| `/oscore-info` | GET |
 
 ### CoAP + DTLS 1.2 (5684/UDP)
 
@@ -173,5 +174,5 @@ hkdf_alg,integer,-10
 ./coap-client -m post 'coap://localhost/oscore-context'
 ```
 ```bash
-./coap-client -m get 'coap://localhost/secure-hello' -E ~/coap-client-oscore.conf,/tmp/seq_file
+./coap-client -m get 'coap://localhost/oscore-hello' -E ~/coap-client-oscore.conf,/tmp/seq_file
 ```

@@ -38,7 +38,7 @@ public class ResourceReadings extends CoapResource {
 			String requestPayload = exchange.getRequestText();
 
 			PayloadTransformer payloadTransformer = PayloadTransformerFactory
-					.getPayloadTransformer(PayloadTransformerType.DEFAULT_TRANSFORMER);
+					.get(PayloadTransformerType.DEFAULT_TRANSFORMER);
 			String forwardPayload = payloadTransformer.transform(requestPayload, dictionary);
 
 			// LOGGER.info("Success - SourceContext:{} RequestCode:{} RequestOptions:{}",

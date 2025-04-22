@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class DefaultPayloadTransformer implements PayloadTransformer {
 
-	public static final DefaultPayloadTransformer INSTANCE = new DefaultPayloadTransformer();
+	public static final PayloadTransformer INSTANCE = new DefaultPayloadTransformer();
 
 	private final ObjectMapper mapper = new ObjectMapper();
 
@@ -27,9 +27,7 @@ public class DefaultPayloadTransformer implements PayloadTransformer {
 		result.put("timestamp", System.currentTimeMillis() / 1000);
 
 		try {
-			String serializedResult = mapper.writeValueAsString(result);
-
-			return serializedResult;
+			return mapper.writeValueAsString(result);
 		} catch (Exception e) {
 			throw new InvalidFormatException("Failed to serialize result to JSON.");
 		}

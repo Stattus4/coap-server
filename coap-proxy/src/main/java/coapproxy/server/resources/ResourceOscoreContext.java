@@ -20,7 +20,7 @@ public class ResourceOscoreContext extends CoapResource {
 	private static byte[] id_context = StringUtil.hex2ByteArray("37cbf3210017a2d3");
 
 	private final HashMapCtxDB oscoreCtxDb;
-	
+
 	public ResourceOscoreContext(String name, HashMapCtxDB oscoreCtxDb) {
 		super(name, true);
 		this.oscoreCtxDb = oscoreCtxDb;
@@ -38,19 +38,19 @@ public class ResourceOscoreContext extends CoapResource {
 
 			oscoreContext(exchange, oscoreCtxDb);
 
-			LOGGER.info("Success - SourceContext:{} RequestCode:{} RequestOptions:{}",
+			LOGGER.info("Success - SourceContext: {} RequestCode: {} RequestOptions: {}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
 					exchange.getRequestOptions().toString());
 
 			exchange.respond(ResponseCode.CREATED);
 		} catch (org.json.JSONException e) {
-			LOGGER.info("Error - SourceContext:{} RequestCode:{} RequestOptions:{} - Message:{}",
+			LOGGER.info("Error - SourceContext: {} RequestCode: {} RequestOptions: {} Message: {}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
 					exchange.getRequestOptions().toString(), e.getMessage());
 
 			exchange.respond(ResponseCode.BAD_REQUEST, "Invalid JSON format.");
 		} catch (Exception e) {
-			LOGGER.info("Error - SourceContext:{} RequestCode:{} RequestOptions:{} - Message:{}",
+			LOGGER.info("Error - SourceContext: {} RequestCode: {} RequestOptions: {} Message: {}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
 					exchange.getRequestOptions().toString(), e.getMessage());
 

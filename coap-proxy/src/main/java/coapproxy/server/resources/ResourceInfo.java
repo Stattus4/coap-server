@@ -53,13 +53,13 @@ public class ResourceInfo extends CoapResource {
 			});
 			jsonResponse.put("resources", resourcesArray);
 
-			LOGGER.info("Success - SourceContext:{} RequestCode:{} RequestOptions:{}",
+			LOGGER.info("Success - SourceContext: {} RequestCode: {} RequestOptions: {}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
 					exchange.getRequestOptions().toString());
 
 			exchange.respond(ResponseCode.CONTENT, jsonResponse.toString(), MediaTypeRegistry.APPLICATION_JSON);
 		} catch (Exception e) {
-			LOGGER.info("Error - SourceContext:{} RequestCode:{} RequestOptions:{} - Message:{}",
+			LOGGER.info("Error - SourceContext: {} RequestCode: {} RequestOptions: {} Message: {}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
 					exchange.getRequestOptions().toString(), e.getMessage());
 

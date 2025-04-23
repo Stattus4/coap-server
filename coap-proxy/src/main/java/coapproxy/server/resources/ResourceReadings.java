@@ -10,6 +10,8 @@ import org.eclipse.californium.core.server.resources.CoapExchange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import coapproxy.forward.service.ForwardService;
+import coapproxy.forward.service.ForwardServiceFactory;
 import coapproxy.payload.transformer.PayloadTransformer;
 import coapproxy.payload.transformer.PayloadTransformerFactory;
 import coapproxy.payload.transformer.PayloadTransformerType;
@@ -41,23 +43,23 @@ public class ResourceReadings extends CoapResource {
 					.get(PayloadTransformerType.DEFAULT_TRANSFORMER);
 			String forwardPayload = payloadTransformer.transform(requestPayload, dictionary);
 
-			// LOGGER.info("Success - SourceContext:{} RequestCode:{} RequestOptions:{}",
-			// exchange.getSourceContext().toString(), exchange.getRequestCode(),
-			// exchange.getRequestOptions().toString());
+			ForwardService forwardService = ForwardServiceFactory.get("aws-sqs-staging");
 
-			LOGGER.info("Success - SourceContext:{} RequestCode:{} RequestOptions:{} Payload:{}",
+			forwardService.forward(forwardPayload);
+
+			LOGGER.info("Success - SourceContext: {} RequestCode: {} RequestOptions: {}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
-					exchange.getRequestOptions().toString(), forwardPayload);
+					exchange.getRequestOptions().toString());
 
 			exchange.respond(ResponseCode.CREATED);
 		} catch (org.json.JSONException e) {
-			LOGGER.info("Error - SourceContext:{} RequestCode:{} RequestOptions:{} - Message:{}",
+			LOGGER.info("Error - SourceContext: {} RequestCode: {} RequestOptions: {} Message: {}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
 					exchange.getRequestOptions().toString(), e.getMessage());
 
 			exchange.respond(ResponseCode.BAD_REQUEST, "Invalid JSON format.");
 		} catch (Exception e) {
-			LOGGER.info("Error - SourceContext:{} RequestCode:{} RequestOptions:{} - Message:{}",
+			LOGGER.info("Error - SourceContext: {} RequestCode: {} RequestOptions: {} Message: {}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
 					exchange.getRequestOptions().toString(), e.getMessage());
 

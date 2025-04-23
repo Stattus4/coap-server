@@ -46,7 +46,7 @@ public class OscoreResourceInfo extends OSCoreResource {
 				"\noffset = oscoreCtx.getRecipientReplaySize() - Integer.numberOfLeadingZeros(oscoreCtx.getRecipientReplayWindow()): "
 						+ String.valueOf(offset));
 
-		LOGGER.info("Success - SourceContext:{} RequestCode:{} RequestOptions:{}",
+		LOGGER.info("Success - SourceContext: {} RequestCode: {} RequestOptions: {}",
 				exchange.getSourceContext().toString(), exchange.getRequestCode(),
 				exchange.getRequestOptions().toString());
 

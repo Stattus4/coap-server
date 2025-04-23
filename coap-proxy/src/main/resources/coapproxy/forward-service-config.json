@@ -1,0 +1,11 @@
+{
+	"aws-kinesis-staging": {
+		"forward-service-class": "coapproxy.forward.service.AwsKinesisForwardService",
+		"stream-name": "saeast_iot_stream_homolog",
+		"partition-key": "partition_key"
+	},
+	"aws-sqs-staging": {
+		"forward-service-class": "coapproxy.forward.service.AwsSqsForwardService",
+		"queue-name": "saeast_iot_queue_homolog"
+	}
+}

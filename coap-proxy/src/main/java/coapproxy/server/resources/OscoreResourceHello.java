@@ -26,7 +26,7 @@ public class OscoreResourceHello extends OSCoreResource {
 	public void handleGET(CoapExchange exchange) {
 		StringBuilder payload = new StringBuilder();
 
-		LOGGER.info("Success - SourceContext:{} RequestCode:{} RequestOptions:{}",
+		LOGGER.info("Success - SourceContext: {} RequestCode: {} RequestOptions: {}",
 				exchange.getSourceContext().toString(), exchange.getRequestCode(),
 				exchange.getRequestOptions().toString());
 

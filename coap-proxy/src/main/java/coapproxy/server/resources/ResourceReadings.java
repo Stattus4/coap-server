@@ -44,7 +44,6 @@ public class ResourceReadings extends CoapResource {
 			String forwardPayload = payloadTransformer.transform(requestPayload, dictionary);
 
 			ForwardService forwardService = ForwardServiceFactory.get("aws-sqs-staging");
-
 			forwardService.forward(forwardPayload);
 
 			LOGGER.info("Success - SourceContext: {} RequestCode: {} RequestOptions: {}",

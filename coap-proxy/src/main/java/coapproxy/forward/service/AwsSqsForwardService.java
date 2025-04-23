@@ -1,7 +1,5 @@
 package coapproxy.forward.service;
 
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,20 +13,18 @@ public class AwsSqsForwardService implements ForwardService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AwsSqsForwardService.class);
 
+	public static final String FORWARD_SERVICE_CONFIG_CLASS = "coapproxy.forward.service.AwsSqsForwardServiceConfig";
+
 	private final SqsClient sqsClient = SqsClient.builder().build();
 	private final String id;
 	private final String queueName;
 
 	private String queueUrl;
 
-	public AwsSqsForwardService(String id, Map<String, Object> configMap) {
+	public AwsSqsForwardService(String id, AwsSqsForwardServiceConfig config) {
 		this.id = id;
 
-		queueName = (String) configMap.get("queue-name");
-
-		if (queueName == null) {
-			throw new IllegalArgumentException(this.getClass().getSimpleName() + ": Missing queue-name");
-		}
+		queueName = config.getQueueName();
 	}
 
 	@Override

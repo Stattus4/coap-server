@@ -7,6 +7,9 @@ public class PayloadTransformerFactory {
 				DefaultPayloadTransformer.INSTANCE);
 	}
 
+	private PayloadTransformerFactory() {
+	}
+
 	public static PayloadTransformer get(PayloadTransformerType type) {
 		return PayloadTransformerRegistry.get(type);
 	}

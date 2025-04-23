@@ -15,12 +15,23 @@ public class AwsKinesisForwardService implements ForwardService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AwsKinesisForwardService.class);
 
 	private final KinesisClient kinesisClient = KinesisClient.builder().build();
+	private final String id;
 	private final String streamName;
 	private final String partitionKey;
 
-	public AwsKinesisForwardService(Map<String, Object> configMap) {
+	public AwsKinesisForwardService(String id, Map<String, Object> configMap) {
+		this.id = id;
+
 		streamName = (String) configMap.get("stream-name");
 		partitionKey = (String) configMap.get("partition-key");
+
+		if (streamName == null) {
+			throw new IllegalArgumentException(this.getClass().getSimpleName() + ": Missing stream-name");
+		}
+
+		if (partitionKey == null) {
+			throw new IllegalArgumentException(this.getClass().getSimpleName() + ": Missing partition-key");
+		}
 	}
 
 	@Override
@@ -30,6 +41,6 @@ public class AwsKinesisForwardService implements ForwardService {
 
 		PutRecordResponse putRecordResponse = kinesisClient.putRecord(putRecordRequest);
 
-		LOGGER.info("Sequence Number:{}", putRecordResponse.sequenceNumber());
+		LOGGER.info("ID: {} Sequence Number: {}", id, putRecordResponse.sequenceNumber());
 	}
 }

@@ -22,9 +22,10 @@ public class DefaultPayloadTransformer implements PayloadTransformer {
 
 		ObjectNode result = mapper.createObjectNode();
 
-		result.put("device", String.valueOf(dictionary.get("device")));
-		result.put("payload", payload);
-		result.put("timestamp", System.currentTimeMillis() / 1000);
+		result.put("device", (String) dictionary.get("device"));
+		result.put("payload", payload.trim());
+		result.put("rule_key", "nbiot");
+		result.put("timestamp", System.currentTimeMillis());
 
 		try {
 			return mapper.writeValueAsString(result);

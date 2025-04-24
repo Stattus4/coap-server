@@ -13,7 +13,7 @@ public class ResourceHello extends CoapResource {
 	public ResourceHello(String name) {
 		super(name);
 
-		getAttributes().setTitle("Resource Hello");
+		getAttributes().setTitle(this.getClass().getSimpleName());
 
 		LOGGER.info("CoapResource added");
 	}
@@ -21,13 +21,13 @@ public class ResourceHello extends CoapResource {
 	@Override
 	public void handleGET(CoapExchange exchange) {
 		try {
-			LOGGER.info("Success - SourceContext: {} RequestCode: {} RequestOptions: {}",
+			LOGGER.info("Success - SourceContext: {} RequestCode: {} RequestOptions: {} RequestPayloadSize: {}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
-					exchange.getRequestOptions().toString());
+					exchange.getRequestOptions().toString(), exchange.getRequestPayloadSize());
 
 			exchange.respond(ResponseCode.CONTENT, "Hello!");
 		} catch (Exception e) {
-			LOGGER.info("Error - SourceContext: {} RequestCode: {} RequestOptions: {} Message: {}",
+			LOGGER.info("Error - SourceContext: {} RequestCode: {} RequestOptions: {} ExceptionMessage: {}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
 					exchange.getRequestOptions().toString(), e.getMessage());
 

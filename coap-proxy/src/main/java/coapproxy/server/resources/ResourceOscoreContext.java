@@ -33,24 +33,23 @@ public class ResourceOscoreContext extends CoapResource {
 	@Override
 	public void handlePOST(CoapExchange exchange) {
 		try {
-			// String payload = exchange.getRequestText();
-			// JSONObject jsonRequest = new JSONObject(payload);
+			String payload = exchange.getRequestText();
 
 			oscoreContext(exchange, oscoreCtxDb);
 
-			LOGGER.info("Success - SourceContext: {} RequestCode: {} RequestOptions: {}",
+			LOGGER.info("Success - SourceContext: {} RequestCode: {} RequestOptions: {} RequestPayloadSize: {}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
-					exchange.getRequestOptions().toString());
+					exchange.getRequestOptions().toString(), exchange.getRequestPayloadSize());
 
 			exchange.respond(ResponseCode.CREATED);
-		} catch (org.json.JSONException e) {
-			LOGGER.info("Error - SourceContext: {} RequestCode: {} RequestOptions: {} Message: {}",
+		} catch (IllegalStateException e) {
+			LOGGER.info("Error - SourceContext: {} RequestCode: {} RequestOptions: {} ExceptionMessage: {}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
 					exchange.getRequestOptions().toString(), e.getMessage());
 
-			exchange.respond(ResponseCode.BAD_REQUEST, "Invalid JSON format.");
+			exchange.respond(ResponseCode.BAD_REQUEST, "Bad request.");
 		} catch (Exception e) {
-			LOGGER.info("Error - SourceContext: {} RequestCode: {} RequestOptions: {} Message: {}",
+			LOGGER.info("Error - SourceContext: {} RequestCode: {} RequestOptions: {} ExceptionMessage: {}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
 					exchange.getRequestOptions().toString(), e.getMessage());
 

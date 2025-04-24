@@ -23,7 +23,7 @@ public class OscoreResourceInfo extends OSCoreResource {
 		super(name, true);
 		this.oscoreCtxDb = oscoreCtxDb;
 
-		getAttributes().setTitle("Secure Resource Hello");
+		getAttributes().setTitle(this.getClass().getSimpleName());
 
 		LOGGER.info("CoapResource added");
 	}
@@ -46,9 +46,9 @@ public class OscoreResourceInfo extends OSCoreResource {
 				"\noffset = oscoreCtx.getRecipientReplaySize() - Integer.numberOfLeadingZeros(oscoreCtx.getRecipientReplayWindow()): "
 						+ String.valueOf(offset));
 
-		LOGGER.info("Success - SourceContext: {} RequestCode: {} RequestOptions: {}",
+		LOGGER.info("Success - SourceContext: {} RequestCode: {} RequestOptions: {} RequestPayloadSize: {}",
 				exchange.getSourceContext().toString(), exchange.getRequestCode(),
-				exchange.getRequestOptions().toString());
+				exchange.getRequestOptions().toString(), exchange.getRequestPayloadSize());
 
 		exchange.setMaxAge(30);
 		exchange.respond(ResponseCode.CONTENT, payload.toString(), MediaTypeRegistry.TEXT_PLAIN);

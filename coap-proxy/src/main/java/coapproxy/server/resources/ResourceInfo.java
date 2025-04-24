@@ -8,10 +8,12 @@ import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 import org.eclipse.californium.core.coap.MediaTypeRegistry;
 import org.eclipse.californium.core.network.Endpoint;
 import org.eclipse.californium.core.server.resources.CoapExchange;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class ResourceInfo extends CoapResource {
 
@@ -22,7 +24,7 @@ public class ResourceInfo extends CoapResource {
 		super(name);
 		this.server = server;
 
-		getAttributes().setTitle("Resource Info");
+		getAttributes().setTitle(this.getClass().getSimpleName());
 
 		LOGGER.info("CoapResource added");
 	}
@@ -30,36 +32,42 @@ public class ResourceInfo extends CoapResource {
 	@Override
 	public void handleGET(CoapExchange exchange) {
 		try {
-			JSONObject jsonResponse = new JSONObject();
+			ObjectMapper objectMapper = new ObjectMapper();
+			ObjectNode jsonResponse = objectMapper.createObjectNode();
 
-			JSONArray endpointsArray = new JSONArray();
+			ArrayNode endpointsArray = objectMapper.createArrayNode();
 			List<Endpoint> endpoints = server.getEndpoints();
+
 			for (Endpoint endpoint : endpoints) {
-				JSONObject endpointJson = new JSONObject();
+				ObjectNode endpointJson = objectMapper.createObjectNode();
 				endpointJson.put("hostName", endpoint.getAddress().getHostName());
 				endpointJson.put("uri", endpoint.getUri().toString());
-				endpointsArray.put(endpointJson);
+				endpointsArray.add(endpointJson);
 			}
-			jsonResponse.put("endpoints", endpointsArray);
 
-			JSONArray resourcesArray = new JSONArray();
+			jsonResponse.set("endpoints", endpointsArray);
+
+			ArrayNode resourcesArray = objectMapper.createArrayNode();
+
 			server.getRoot().getChildren().forEach(resource -> {
-				JSONObject resourceJson = new JSONObject();
+				ObjectNode resourceJson = objectMapper.createObjectNode();
 				resourceJson.put("name", resource.getName());
 				resourceJson.put("path", resource.getPath());
 				resourceJson.put("title", resource.getAttributes().getTitle());
 				resourceJson.put("uri", resource.getURI());
-				resourcesArray.put(resourceJson);
+				resourcesArray.add(resourceJson);
 			});
-			jsonResponse.put("resources", resourcesArray);
 
-			LOGGER.info("Success - SourceContext: {} RequestCode: {} RequestOptions: {}",
+			jsonResponse.set("resources", resourcesArray);
+
+			LOGGER.info("Success - SourceContext: {} RequestCode: {} RequestOptions: {} RequestPayloadSize: {}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
-					exchange.getRequestOptions().toString());
+					exchange.getRequestOptions().toString(), exchange.getRequestPayloadSize());
 
-			exchange.respond(ResponseCode.CONTENT, jsonResponse.toString(), MediaTypeRegistry.APPLICATION_JSON);
+			exchange.respond(ResponseCode.CONTENT, objectMapper.writeValueAsString(jsonResponse),
+					MediaTypeRegistry.APPLICATION_JSON);
 		} catch (Exception e) {
-			LOGGER.info("Error - SourceContext: {} RequestCode: {} RequestOptions: {} Message: {}",
+			LOGGER.info("Error - SourceContext: {} RequestCode: {} RequestOptions: {} ExceptionMessage: {}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
 					exchange.getRequestOptions().toString(), e.getMessage());
 

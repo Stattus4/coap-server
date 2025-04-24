@@ -17,20 +17,18 @@ public class OscoreResourceHello extends OSCoreResource {
 	public OscoreResourceHello(String name, boolean isProtected) {
 		super(name, isProtected);
 
-		getAttributes().setTitle("Oscore Resource Hello");
+		getAttributes().setTitle(this.getClass().getSimpleName());
 
 		LOGGER.info("CoapResource added");
 	}
 
 	@Override
 	public void handleGET(CoapExchange exchange) {
-		StringBuilder payload = new StringBuilder();
-
-		LOGGER.info("Success - SourceContext: {} RequestCode: {} RequestOptions: {}",
+		LOGGER.info("Success - SourceContext: {} RequestCode: {} RequestOptions: {} RequestPayloadSize: {}",
 				exchange.getSourceContext().toString(), exchange.getRequestCode(),
-				exchange.getRequestOptions().toString());
+				exchange.getRequestOptions().toString(), exchange.getRequestPayloadSize());
 
 		exchange.setMaxAge(30);
-		exchange.respond(ResponseCode.CONTENT, payload.toString(), MediaTypeRegistry.TEXT_PLAIN);
+		exchange.respond(ResponseCode.CONTENT, "Hello!", MediaTypeRegistry.TEXT_PLAIN);
 	}
 }

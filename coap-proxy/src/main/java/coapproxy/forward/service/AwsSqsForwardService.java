@@ -17,14 +17,13 @@ public class AwsSqsForwardService implements ForwardService {
 
 	private final SqsClient sqsClient = SqsClient.builder().build();
 	private final String id;
-	private final String queueName;
+	private final AwsSqsForwardServiceConfig config;
 
 	private String queueUrl;
 
 	public AwsSqsForwardService(String id, AwsSqsForwardServiceConfig config) {
 		this.id = id;
-
-		queueName = config.getQueueName();
+		this.config = config;
 	}
 
 	@Override
@@ -36,13 +35,13 @@ public class AwsSqsForwardService implements ForwardService {
 
 		SendMessageResponse sendMessageResponse = sqsClient.sendMessage(sendMessageRequest);
 
-		LOGGER.info("ID: {} Message ID: {}", id, sendMessageResponse.messageId());
+		LOGGER.info("[{}] Message ID: {}", id, sendMessageResponse.messageId());
 	}
 
 	private void getQueueUrl() {
 		if (queueUrl == null) {
 			GetQueueUrlResponse getQueueUrlResponse = sqsClient
-					.getQueueUrl(GetQueueUrlRequest.builder().queueName(queueName).build());
+					.getQueueUrl(GetQueueUrlRequest.builder().queueName(config.getQueueName()).build());
 
 			queueUrl = getQueueUrlResponse.queueUrl();
 		}

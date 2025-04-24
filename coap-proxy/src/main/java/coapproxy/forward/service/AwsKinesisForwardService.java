@@ -16,23 +16,20 @@ public class AwsKinesisForwardService implements ForwardService {
 
 	private final KinesisClient kinesisClient = KinesisClient.builder().build();
 	private final String id;
-	private final String streamName;
-	private final String partitionKey;
+	private AwsKinesisForwardServiceConfig config;
 
 	public AwsKinesisForwardService(String id, AwsKinesisForwardServiceConfig config) {
 		this.id = id;
-
-		streamName = (String) config.getStreamName();
-		partitionKey = (String) config.getPartitionKey();
+		this.config = config;
 	}
 
 	@Override
 	public void forward(String payload) {
-		PutRecordRequest putRecordRequest = PutRecordRequest.builder().partitionKey(partitionKey).streamName(streamName)
-				.data(SdkBytes.fromUtf8String(payload)).build();
+		PutRecordRequest putRecordRequest = PutRecordRequest.builder().partitionKey(config.getPartitionKey())
+				.streamName(config.getStreamName()).data(SdkBytes.fromUtf8String(payload)).build();
 
 		PutRecordResponse putRecordResponse = kinesisClient.putRecord(putRecordRequest);
 
-		LOGGER.info("ID: {} Sequence Number: {}", id, putRecordResponse.sequenceNumber());
+		LOGGER.info("[{}] Sequence Number: {}", id, putRecordResponse.sequenceNumber());
 	}
 }

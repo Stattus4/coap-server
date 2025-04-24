@@ -26,7 +26,7 @@ public class ForwardServiceConfigLoader {
 
 			is.close();
 		} catch (IOException e) {
-			throw new RuntimeException("Failed to load forward-service-config.json", e);
+			throw new RuntimeException("Failed to load " + configFilename, e);
 		}
 	}
 

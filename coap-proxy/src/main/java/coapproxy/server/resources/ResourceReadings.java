@@ -23,7 +23,7 @@ public class ResourceReadings extends CoapResource {
 	public ResourceReadings(String name) {
 		super(name);
 
-		getAttributes().setTitle("Resource Readings");
+		getAttributes().setTitle(this.getClass().getSimpleName());
 
 		LOGGER.info("CoapResource added");
 	}
@@ -46,19 +46,13 @@ public class ResourceReadings extends CoapResource {
 			ForwardService forwardService = ForwardServiceFactory.get("aws-sqs-staging");
 			forwardService.forward(forwardPayload);
 
-			LOGGER.info("Success - SourceContext: {} RequestCode: {} RequestOptions: {}",
+			LOGGER.info("Success - SourceContext: {} RequestCode: {} RequestOptions: {} RequestPayloadSize: {}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
-					exchange.getRequestOptions().toString());
+					exchange.getRequestOptions().toString(), exchange.getRequestPayloadSize());
 
 			exchange.respond(ResponseCode.CREATED);
-		} catch (org.json.JSONException e) {
-			LOGGER.info("Error - SourceContext: {} RequestCode: {} RequestOptions: {} Message: {}",
-					exchange.getSourceContext().toString(), exchange.getRequestCode(),
-					exchange.getRequestOptions().toString(), e.getMessage());
-
-			exchange.respond(ResponseCode.BAD_REQUEST, "Invalid JSON format.");
 		} catch (Exception e) {
-			LOGGER.info("Error - SourceContext: {} RequestCode: {} RequestOptions: {} Message: {}",
+			LOGGER.info("Error - SourceContext: {} RequestCode: {} RequestOptions: {} ExceptionMessage: {}",
 					exchange.getSourceContext().toString(), exchange.getRequestCode(),
 					exchange.getRequestOptions().toString(), e.getMessage());
 

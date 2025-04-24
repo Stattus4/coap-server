@@ -1,16 +1,22 @@
 package coapproxy.forward.service;
 
 import java.util.Map;
+import java.util.Set;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+
 public class ForwardServiceFactory {
 
-	private static final ObjectMapper objectMapper;
+	private static final ObjectMapper objectMapper = new ObjectMapper();;
+	private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
 	static {
-		objectMapper = new ObjectMapper();
 		objectMapper.configure(DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES, true);
 		objectMapper.configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true);
 		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -33,8 +39,8 @@ public class ForwardServiceFactory {
 
 			return forwardService;
 		} catch (Exception e) {
-			throw new RuntimeException(ForwardServiceFactory.class.getSimpleName() + ": Failed to instantiate for ID: "
-					+ id + " Message: " + e.getMessage());
+			throw new RuntimeException("[" + ForwardServiceFactory.class.getName() + "] Failed to register [" + id
+					+ "] ExceptionMessage: " + e.getMessage());
 		}
 	}
 
@@ -54,16 +60,23 @@ public class ForwardServiceFactory {
 			ForwardServiceConfig forwardServiceConfig = (ForwardServiceConfig) objectMapper
 					.convertValue(configMap.get(id), configClazz);
 
+			validateForwardServiceConfig(forwardServiceConfig);
+
 			ForwardService forwardService = (ForwardService) clazz
 					.getConstructor(String.class, forwardServiceConfig.getClass())
 					.newInstance(id, forwardServiceConfig);
 
 			return forwardService;
 		} catch (Exception e) {
-//			throw new RuntimeException(ForwardServiceFactory.class.getSimpleName() + ": Failed to instantiate for ID: "
-//					+ id + " Message: " + e.getMessage());
+			throw new RuntimeException("Failed to instantiate [" + id + "] ExceptionMessage: " + e.getMessage());
+		}
+	}
 
-			throw new RuntimeException(e.getMessage(), e.getCause());
+	private static void validateForwardServiceConfig(ForwardServiceConfig forwardServiceConfig) {
+		Set<ConstraintViolation<ForwardServiceConfig>> violations = validator.validate(forwardServiceConfig);
+
+		if (!violations.isEmpty()) {
+			throw new ConstraintViolationException(violations);
 		}
 	}
 }

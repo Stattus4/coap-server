@@ -45,16 +45,15 @@ public class ForwardServiceFactory {
 	}
 
 	private static ForwardService forwardServiceNewInstance(String id) {
-		Map<String, Map<String, Object>> configMap = ForwardServiceConfigLoader.getConfigMap();
-
-		String forwardServiceClass = (String) configMap.get(id).get("forward-service-class");
-
 		try {
+			Map<String, Object> configMap = ForwardServiceConfigLoader.getConfigMap();
+
+			Map<String, Object> serviceId = (Map<String, Object>) configMap.get(id);
+			String forwardServiceClass = (String) serviceId.get("forward-service-class");
 			Class<?> clazz = Class.forName(forwardServiceClass);
 
 			String forwardServiceConfigClass = (String) clazz.getDeclaredField("FORWARD_SERVICE_CONFIG_CLASS")
 					.get(String.class);
-
 			Class<?> configClazz = Class.forName(forwardServiceConfigClass);
 
 			ForwardServiceConfig forwardServiceConfig = (ForwardServiceConfig) objectMapper

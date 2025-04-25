@@ -25,7 +25,7 @@ public class ResourceOscoreContext extends CoapResource {
 		super(name, true);
 		this.oscoreCtxDb = oscoreCtxDb;
 
-		getAttributes().setTitle("Resource OSCORE Context");
+		getAttributes().setTitle(this.getClass().getSimpleName());
 
 		LOGGER.info("CoapResource added");
 	}

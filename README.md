@@ -63,11 +63,15 @@ java -jar target/coap-proxy-0.0.1-jar-with-dependencies.jar
 
 ## Environment Variables
 
-`PSK_IDENTITY` (Default value: `identity`)
+`COAPPROXY_SERVER_START_ENV` (Default value: `true`)
 
-`PSK_SECRET` (Default value: `qwerty`)
+`COAPPROXY_SECURE_SERVER_START_ENV` (Default value: `true`)
 
-**Warning:** The default values for `PSK_IDENTITY` and `PSK_SECRET` are provided for testing purposes only. In a production environment, it is crucial to generate and use strong, unique values.
+`COAPPROXY_SECURE_SERVER_PSK_IDENTITY` (Default value: `identity`)
+
+`COAPPROXY_SECURE_SERVER_PSK_SECRET` (Default value: `qwerty`)
+
+**Warning:** The default values for `COAPPROXY_SECURE_SERVER_PSK_IDENTITY` and `COAPPROXY_SECURE_SERVER_PSK_SECRET` are provided for testing purposes only. In a production environment, it is crucial to generate and use strong, unique values.
 
 ## CoAP Resources
 

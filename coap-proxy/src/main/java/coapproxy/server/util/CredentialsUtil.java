@@ -31,6 +31,9 @@ import org.eclipse.californium.scandium.dtls.x509.StaticCertificateVerifier.Buil
  */
 public class CredentialsUtil {
 
+	private static final String COAPPROXY_SECURE_SERVER_PSK_IDENTITY_ENV = "COAPPROXY_SECURE_SERVER_PSK_IDENTITY";
+	private static final String COAPPROXY_SECURE_SERVER_PSK_SECRET_ENV = "COAPPROXY_SECURE_SERVER_PSK_SECRET";
+
 	/**
 	 * Credentials mode.
 	 */
@@ -106,17 +109,17 @@ public class CredentialsUtil {
 	private static final String[] OPT_CID_LIST = { OPT_CID };
 
 	static {
-		String envPskIdentity = System.getenv("PSK_IDENTITY");
-		String envPskSecret = System.getenv("PSK_SECRET");
+		String pskIdentityEnv = System.getenv(COAPPROXY_SECURE_SERVER_PSK_IDENTITY_ENV);
+		String pskSecretEnv = System.getenv(COAPPROXY_SECURE_SERVER_PSK_SECRET_ENV);
 
-		if (envPskIdentity != null && !envPskIdentity.isEmpty()) {
-			PSK_IDENTITY = envPskIdentity;
+		if (pskIdentityEnv != null && !pskIdentityEnv.isEmpty()) {
+			PSK_IDENTITY = pskIdentityEnv;
 		} else {
 			PSK_IDENTITY = "identity";
 		}
 
-		if (envPskSecret != null && !envPskSecret.isEmpty()) {
-			PSK_SECRET = envPskSecret.getBytes(StandardCharsets.UTF_8);
+		if (pskSecretEnv != null && !pskSecretEnv.isEmpty()) {
+			PSK_SECRET = pskSecretEnv.getBytes(StandardCharsets.UTF_8);
 		} else {
 			PSK_SECRET = "qwerty".getBytes(StandardCharsets.UTF_8);
 		}

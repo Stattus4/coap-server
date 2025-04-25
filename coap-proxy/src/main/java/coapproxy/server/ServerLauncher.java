@@ -2,21 +2,39 @@ package coapproxy.server;
 
 public class ServerLauncher {
 
-	public static void main(String[] args) {
-		new Thread(() -> {
-			try {
-				CfServer.main(args);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}).start();
+	private static final String COAPPROXY_SERVER_START_ENV = "COAPPROXY_SERVER_START";
+	private static final String COAPPROXY_SECURE_SERVER_START_ENV = "COAPPROXY_SECURE_SERVER_START";
 
-		new Thread(() -> {
+	public static void main(String[] args) {
+		if (shouldStart(COAPPROXY_SERVER_START_ENV)) {
+			startThread("CfServer", () -> CfServer.main(null));
+		}
+
+		if (shouldStart(COAPPROXY_SECURE_SERVER_START_ENV)) {
+			startThread("CfSecureServer", () -> CfSecureServer.main(null));
+		}
+	}
+
+	private static boolean shouldStart(String envVar) {
+		String value = System.getenv(envVar);
+
+		if (value == null) {
+			return true;
+		}
+
+		return Boolean.parseBoolean(value);
+	}
+
+	private static void startThread(String threadName, Runnable target) {
+		Thread thread = new Thread(() -> {
 			try {
-				CfSecureServer.main(args);
+				target.run();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}).start();
+		});
+
+		thread.setName(threadName);
+		thread.start();
 	}
 }

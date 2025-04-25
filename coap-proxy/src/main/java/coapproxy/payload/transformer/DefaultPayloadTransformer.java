@@ -17,11 +17,11 @@ public class DefaultPayloadTransformer implements PayloadTransformer {
 	@Override
 	public String transform(String payload, Map<String, Object> dictionary) throws InvalidFormatException {
 		if (dictionary == null || !dictionary.containsKey("device")) {
-			throw new InvalidFormatException("Dictionary must contain a 'device' key.");
+			throw new InvalidFormatException(
+					"[" + DefaultPayloadTransformer.class.getName() + "] Dictionary must contain 'device'");
 		}
 
 		ObjectNode result = mapper.createObjectNode();
-
 		result.put("device", (String) dictionary.get("device"));
 		result.put("payload", payload.trim());
 		result.put("rule_key", "nbiot");
@@ -30,7 +30,7 @@ public class DefaultPayloadTransformer implements PayloadTransformer {
 		try {
 			return mapper.writeValueAsString(result);
 		} catch (Exception e) {
-			throw new InvalidFormatException("Failed to serialize result to JSON.");
+			throw new RuntimeException("[" + DefaultPayloadTransformer.class.getName() + "] Failed to serialize");
 		}
 	}
 }

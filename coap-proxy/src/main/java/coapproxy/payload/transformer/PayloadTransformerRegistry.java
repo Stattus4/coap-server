@@ -18,7 +18,8 @@ public class PayloadTransformerRegistry {
 		PayloadTransformer payloadTransformer = registry.get(type);
 
 		if (payloadTransformer == null) {
-			throw new IllegalArgumentException("No payload transformer registered under type: " + type.name());
+			throw new IllegalArgumentException(
+					"[" + PayloadTransformerRegistry.class.getName() + "] Failed to get [" + type.name() + "]");
 		}
 
 		return payloadTransformer;

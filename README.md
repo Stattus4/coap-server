@@ -180,3 +180,54 @@ hkdf_alg,integer,-10
 ```bash
 ./coap-client -m get 'coap://localhost/oscore-hello' -E ~/coap-client-oscore.conf,/tmp/seq_file
 ```
+
+## Load Test
+
+### Usage
+
+```bash
+$ java -jar load-test.jar
+Usage: java LoadTest --uri <coap://...> --method <GET|POST> [options]
+
+    --ack-timeout <N>              ACK timeout in milliseconds
+    --max-retransmit <N>           Maximum number of retransmissions per request
+    --num-requests <N>             Total number of requests to send (default: 1)
+    --thread-pool-size <N>         Thread pool size to use (default: 1)
+    --payload-file <path>          Path to file containing request payload
+```
+
+### Sample
+
+```bash
+$ java -jar load-test.jar --uri 'coap://localhost/hello' --method GET --num-requests 6000 --thread-pool-size 2000
+= Settings =============================
+
+URI:                  coap://localhost/hello
+Method:               GET
+ACK Timeout:          2[s]
+Max Retransmit:       4
+Num Requests:         6000
+Thread Pool Size:     2000
+
+= Request Results ======================
+
+Success:              5999
+Failed:               1
+
+Min Time:             10 ms
+Avg Time:             2682,35 ms
+Max Time:             41183 ms
+
+= Request Details ======================
+
+Cancel:               1
+Reject:               0
+Retransmission:       256
+Timeout:              1
+
+= Message Retransmission ===============
+
+Retransmitted 1x:     218 (92,37%) requests
+Retransmitted 2x:     17 (7,20%) requests
+Retransmitted 4x:     1 (0,42%) requests
+```

@@ -17,7 +17,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.californium.core.CoapClient;
 import org.eclipse.californium.core.CoapResponse;
-import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 import org.eclipse.californium.core.coap.MediaTypeRegistry;
 import org.eclipse.californium.core.coap.MessageObserverAdapter;
 import org.eclipse.californium.core.coap.Request;
@@ -59,6 +58,11 @@ public class LoadTest {
 	public static void main(String[] args) throws InterruptedException, IOException {
 		Map<String, String> argsMap = parseArgs(args);
 
+		if (argsMap.size() == 0) {
+			usage();
+			System.exit(0);
+		}
+
 		String uri = argsMap.get("uri");
 		String method = argsMap.get("method");
 
@@ -66,8 +70,7 @@ public class LoadTest {
 		int threadPoolSize = Integer.parseInt(argsMap.getOrDefault("thread-pool-size", "1"));
 
 		if (method == null || uri == null) {
-			System.err.println(
-					"Usage: java LoadTest --uri coap://... --method GET|POST [--ack-timeout (ms)] [--max-retransmit N] [--num-requests N] [--thread-pool-size N] [--payload-file path]");
+			usage();
 			System.exit(1);
 		}
 
@@ -158,8 +161,8 @@ public class LoadTest {
 
 					long duration = (System.nanoTime() - startTime) / 1_000_000;
 
-					// if (response != null && response.getCode().isSuccess()) {
-					if (response != null && response.getCode() == ResponseCode.CONTENT) {
+					// if (response != null && response.getCode() == ResponseCode.CONTENT) {
+					if (response != null && response.getCode().isSuccess()) {
 						responseTimes.add(duration);
 						successCount.incrementAndGet();
 					} else {
@@ -182,6 +185,7 @@ public class LoadTest {
 
 		if (responseTimes.isEmpty()) {
 			System.out.println("No successful requests.");
+			System.exit(1);
 		}
 
 		long min = Collections.min(responseTimes);
@@ -251,5 +255,14 @@ public class LoadTest {
 		}
 
 		return map;
+	}
+
+	private static void usage() {
+		System.out.println("Usage: java LoadTest --uri <coap://...> --method <GET|POST> [options]\n\n"
+				+ "    --ack-timeout <N>              ACK timeout in milliseconds\n"
+				+ "    --max-retransmit <N>           Maximum number of retransmissions per request\n"
+				+ "    --num-requests <N>             Total number of requests to send (default: 1)\n"
+				+ "    --thread-pool-size <N>         Thread pool size to use (default: 1)\n"
+				+ "    --payload-file <path>          Path to file containing request payload\n");
 	}
 }

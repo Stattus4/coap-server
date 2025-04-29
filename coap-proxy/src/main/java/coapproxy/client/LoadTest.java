@@ -170,7 +170,7 @@ public class LoadTest {
 				} catch (Exception e) {
 					failureCount.incrementAndGet();
 
-					e.printStackTrace();
+					// e.printStackTrace();
 				} finally {
 					latch.countDown();
 				}
@@ -238,7 +238,6 @@ public class LoadTest {
 						retransmissionCount, percent));
 			}
 		}
-
 	}
 
 	private static Map<String, String> parseArgs(String[] args) {

@@ -23,7 +23,6 @@ import org.eclipse.californium.core.coap.Request;
 import org.eclipse.californium.core.config.CoapConfig;
 import org.eclipse.californium.core.network.CoapEndpoint;
 import org.eclipse.californium.elements.config.Configuration;
-import org.eclipse.californium.elements.config.Configuration.DefinitionsProvider;
 import org.eclipse.californium.elements.config.UdpConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,15 +31,15 @@ import ch.qos.logback.classic.Level;
 
 public class LoadTest {
 
-	private static final File CONFIG_FILE = new File("Californium3.properties");
-	private static final String CONFIG_HEADER = "Californium CoAP Properties";
+	// private static final File CONFIG_FILE = new File("Californium3.properties");
+	// private static final String CONFIG_HEADER = "Californium CoAP Properties";
 
-	private static DefinitionsProvider DEFAULTS = new DefinitionsProvider() {
+	// private static DefinitionsProvider DEFAULTS = new DefinitionsProvider() {
 
-		@Override
-		public void applyDefinitions(Configuration config) {
-		}
-	};
+	// @Override
+	// public void applyDefinitions(Configuration config) {
+	// }
+	// };
 
 	private static AtomicInteger clientUniqueId = new AtomicInteger(0);
 	private static Map<String, Integer> onRetransmissionHashMap = new ConcurrentHashMap<>();
@@ -90,7 +89,9 @@ public class LoadTest {
 		String finalMethod = method;
 		String finalPayload = payload;
 
-		Configuration configuration = Configuration.createWithFile(CONFIG_FILE, CONFIG_HEADER, DEFAULTS);
+		// Configuration configuration = Configuration.createWithFile(CONFIG_FILE,
+		// CONFIG_HEADER, DEFAULTS);
+		Configuration configuration = Configuration.getStandard();
 
 		if (argsMap.get("ack-timeout") != null) {
 			configuration.set(CoapConfig.ACK_TIMEOUT, Integer.parseInt(argsMap.get("ack-timeout")),

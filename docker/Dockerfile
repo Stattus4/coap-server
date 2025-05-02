@@ -37,4 +37,4 @@ RUN test -f $LOAD_TEST_JAR && mv $LOAD_TEST_JAR load-test.jar || true
 
 EXPOSE 5683/udp 5684/udp
 
-ENTRYPOINT ["java", "-jar", "coap-proxy.jar"]
+CMD  ["java", "-jar", "coap-proxy.jar"]

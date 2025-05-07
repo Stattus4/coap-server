@@ -1,15 +1,18 @@
-version: "3.8"
-
 services:
   coap-proxy-app:
     build:
       context: ..
       dockerfile: docker/Dockerfile
+      args:
+        BUILD_CF_CLIENT: true
+        BUILD_LOAD_TEST: true
     container_name: coap-proxy-app
     ports:
       - "5683:5683/udp"
       - "5684:5684/udp"
     environment:
-      PSK_IDENTITY: "identity"
-      PSK_SECRET: "qwerty"
+      COAPPROXY_SERVER_START: true
+      COAPPROXY_SECURE_SERVER_START: true
+      COAPPROXY_SECURE_SERVER_PSK_IDENTITY: "identity"
+      COAPPROXY_SECURE_SERVER_PSK_SECRET: "qwerty"
     restart: unless-stopped

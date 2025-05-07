@@ -1,6 +1,9 @@
+# CoAP Proxy
+
 ## About
 
-This Proof of Concept (PoC) demonstrates a basic Constrained Application Protocol (CoAP) server implementation using Eclipse Californium.
+~~This Proof of Concept (PoC) demonstrates a basic Constrained Application Protocol (CoAP) server implementation using Eclipse Californium.~~
+
 
 ## The Eclipse Californium Framework
 
@@ -11,9 +14,11 @@ This Proof of Concept (PoC) demonstrates a basic Constrained Application Protoco
 [https://eclipse.dev/californium/](https://eclipse.dev/californium/)  
 [https://github.com/eclipse-californium/californium](https://github.com/eclipse-californium/californium)
 
+
 ## Protocols - Eclipse Californium Implementations
 
 [https://projects.eclipse.org/projects/iot.californium](https://projects.eclipse.org/projects/iot.californium)
+
 
 ## Protocols - Application Implementations
 
@@ -21,20 +26,25 @@ This Proof of Concept (PoC) demonstrates a basic Constrained Application Protoco
 * Datagram Transport Layer Security (DTLS) 1.2: RFC 6347 ([https://datatracker.ietf.org/doc/html/rfc6347](https://datatracker.ietf.org/doc/html/rfc6347))
 * Object Security for Constrained RESTful Environments (OSCORE): RFC 8613 ([https://datatracker.ietf.org/doc/html/rfc8613/](https://datatracker.ietf.org/doc/html/rfc8613/))
 
+
 ## Application Implementation Overview
 
-* Launcher: the launcher starts the two implemented servers
+* Launcher: the launcher starts the CoAP and CoAP + DTLS servers
 * CoAP: 5683/UDP (unencrypted + optional OSCORE)
 * CoAP + DTLS: 5684/UDP (DTLS 1.2)
+
 
 ## Build & Runtime Requirements
 
 * OpenJDK 21
 * Maven 3.9.9
 
+
 ## Non-Production Installation
 
 ### Containerized Setup (Docker)
+
+#### Downloading, Building and Starting the Server
 
 ```bash
 git clone https://github.com/Stattus4/coap-server.git
@@ -46,32 +56,62 @@ cd coap-server/
 sudo docker compose -f docker/docker-compose.yml up
 ```
 
+#### Running the CLI (Command Line Interface) Applications
+
+Run an interactive shell in the running container:
+
+```bash
+sudo docker exec -it coap-proxy-app /bin/bash
+```
+
+The CLI applications executable JAR paths:
+
+| Application | JAR Path |
+| --- | --- |
+| cf-client | `/app/cf-client.jar` |
+| load-test | `/app/load-test.jar` |
+
 ### Manual Build (Maven)
+
+#### Downloading and Building
 
 ```bash
 git clone https://github.com/Stattus4/coap-server.git
 ```
 ```bash
-cd coap-server/coap-proxy/
+cd coap-server/
 ```
 ```bash
-mvn clean package
+mvn clean package -Pcf-client -Pload-test
 ```
+
+#### Executable JAR Paths
+
+| Application | JAR Path |
+| --- | --- |
+| coap-proxy | `coap-proxy/target/coap-proxy-jar-with-dependencies.jar` |
+| cf-client | `target/cf-client.jar` |
+| load-test | `load-test/target/load-test-jar-with-dependencies.jar` |
+
+#### Starting the Server (coap-proxy)
+
 ```bash
-java -jar target/coap-proxy-0.0.1-jar-with-dependencies.jar
+java -jar coap-proxy/target/coap-proxy-jar-with-dependencies.jar
 ```
+
 
 ## Environment Variables
 
-`COAPPROXY_SERVER_START_ENV` (Default value: `true`)
+`COAPPROXY_SERVER_START` (Default value: `true`)
 
-`COAPPROXY_SECURE_SERVER_START_ENV` (Default value: `true`)
+`COAPPROXY_SECURE_SERVER_START` (Default value: `true`)
 
 `COAPPROXY_SECURE_SERVER_PSK_IDENTITY` (Default value: `identity`)
 
 `COAPPROXY_SECURE_SERVER_PSK_SECRET` (Default value: `qwerty`)
 
 **Warning:** The default values for `COAPPROXY_SECURE_SERVER_PSK_IDENTITY` and `COAPPROXY_SECURE_SERVER_PSK_SECRET` are provided for testing purposes only. In a production environment, it is crucial to generate and use strong, unique values.
+
 
 ## CoAP Resources
 
@@ -99,15 +139,10 @@ java -jar target/coap-proxy-0.0.1-jar-with-dependencies.jar
 | `/info` | GET |
 | `/readings` | POST |
 
+
 ## CoAP Clients
 
 ### Eclipse Californium - cf-client
-
-#### Enter Into the Docker Container's Shell
-
-```bash
-sudo docker exec -it coap-proxy-app /bin/bash
-```
 
 #### Examples
 
@@ -179,4 +214,56 @@ hkdf_alg,integer,-10
 ```
 ```bash
 ./coap-client -m get 'coap://localhost/oscore-hello' -E ~/coap-client-oscore.conf,/tmp/seq_file
+```
+
+
+## Load Test
+
+### Usage
+
+```bash
+$ java -jar load-test.jar
+Usage: java LoadTest --uri <coap://...> --method <GET|POST> [options]
+
+    --ack-timeout <N>              ACK timeout in milliseconds
+    --max-retransmit <N>           Maximum number of retransmissions per request
+    --num-requests <N>             Total number of requests to send (default: 1)
+    --thread-pool-size <N>         Thread pool size to use (default: 1)
+    --payload-file <path>          Path to file containing request payload
+```
+
+### Sample
+
+```bash
+$ java -jar load-test.jar --uri 'coap://localhost/hello' --method GET --num-requests 6000 --thread-pool-size 2000
+= Settings =============================
+
+URI:                  coap://localhost/hello
+Method:               GET
+ACK Timeout:          2[s]
+Max Retransmit:       4
+Num Requests:         6000
+Thread Pool Size:     2000
+
+= Request Results ======================
+
+Success:              5999
+Failed:               1
+
+Min Time:             10 ms
+Avg Time:             2682,35 ms
+Max Time:             41183 ms
+
+= Request Details ======================
+
+Cancel:               1
+Reject:               0
+Retransmission:       256
+Timeout:              1
+
+= Message Retransmission ===============
+
+Retransmitted 1x:     218 (92,37%) requests
+Retransmitted 2x:     17 (7,20%) requests
+Retransmitted 4x:     1 (0,42%) requests
 ```

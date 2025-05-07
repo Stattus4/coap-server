@@ -7,7 +7,7 @@ on:
 env:
   AWS_REGION: sa-east-1
   REGISTRY: ghcr.io
-  EKS_CLUSTER_NAME: eks-cluster-main-sa-east-1-00001
+  EKS_CLUSTER_NAME: eks-cluster-main-sa-east-1-000001
   EKS_NM: production
   IMAGE_NAME: ghcr.io/stattus4/${{ github.event.repository.name }}-main
 jobs:

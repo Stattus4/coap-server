@@ -15,13 +15,20 @@ import coapproxy.forward.service.ForwardServiceFactory;
 import coapproxy.payload.transformer.PayloadTransformer;
 import coapproxy.payload.transformer.PayloadTransformerFactory;
 import coapproxy.payload.transformer.PayloadTransformerType;
+import coapproxy.server.resources.config.ResourceReadingsConfig;
 
 public class ResourceReadings extends CoapResource {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ResourceReadings.class);
 
+	private final ForwardService forwardService;
+	private final PayloadTransformer payloadTransformer;
+
 	public ResourceReadings(String name) {
 		super(name);
+
+		forwardService = ForwardServiceFactory.get(ResourceReadingsConfig.getDefaultForwardService());
+		payloadTransformer = PayloadTransformerFactory.get(PayloadTransformerType.DEFAULT_TRANSFORMER);
 
 		getAttributes().setTitle(this.getClass().getSimpleName());
 
@@ -38,12 +45,8 @@ public class ResourceReadings extends CoapResource {
 			dictionary.put("device", device);
 
 			String requestPayload = exchange.getRequestText();
-
-			PayloadTransformer payloadTransformer = PayloadTransformerFactory
-					.get(PayloadTransformerType.DEFAULT_TRANSFORMER);
 			String forwardPayload = payloadTransformer.transform(requestPayload, dictionary);
 
-			ForwardService forwardService = ForwardServiceFactory.get("aws-sqs-staging");
 			forwardService.forward(forwardPayload);
 
 			LOGGER.info("Success - SourceContext: {} RequestCode: {} RequestOptions: {} RequestPayloadSize: {}",

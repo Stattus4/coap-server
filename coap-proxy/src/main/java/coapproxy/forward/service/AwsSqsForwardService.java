@@ -3,6 +3,7 @@ package coapproxy.forward.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import coapproxy.forward.service.config.AwsSqsForwardServiceConfig;
 import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.GetQueueUrlRequest;
 import software.amazon.awssdk.services.sqs.model.GetQueueUrlResponse;
@@ -13,7 +14,7 @@ public class AwsSqsForwardService implements ForwardService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AwsSqsForwardService.class);
 
-	public static final String FORWARD_SERVICE_CONFIG_CLASS = "coapproxy.forward.service.AwsSqsForwardServiceConfig";
+	public static final String FORWARD_SERVICE_CONFIG_CLASS = "coapproxy.forward.service.config.AwsSqsForwardServiceConfig";
 
 	private final SqsClient sqsClient = SqsClient.builder().build();
 	private final String id;

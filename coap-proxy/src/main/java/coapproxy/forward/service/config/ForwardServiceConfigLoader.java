@@ -1,4 +1,4 @@
-package coapproxy.forward.service;
+package coapproxy.forward.service.config;
 
 import java.io.InputStream;
 import java.util.HashMap;

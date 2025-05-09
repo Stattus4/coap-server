@@ -6,6 +6,8 @@ import java.util.Set;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import coapproxy.forward.service.config.ForwardServiceConfig;
+import coapproxy.forward.service.config.ForwardServiceConfigLoader;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validation;

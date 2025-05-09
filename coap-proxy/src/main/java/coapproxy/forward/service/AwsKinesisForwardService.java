@@ -3,6 +3,7 @@ package coapproxy.forward.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import coapproxy.forward.service.config.AwsKinesisForwardServiceConfig;
 import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.services.kinesis.KinesisClient;
 import software.amazon.awssdk.services.kinesis.model.PutRecordRequest;
@@ -12,7 +13,7 @@ public class AwsKinesisForwardService implements ForwardService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AwsKinesisForwardService.class);
 
-	public static final String FORWARD_SERVICE_CONFIG_CLASS = "coapproxy.forward.service.AwsKinesisForwardServiceConfig";
+	public static final String FORWARD_SERVICE_CONFIG_CLASS = "coapproxy.forward.service.config.AwsKinesisForwardServiceConfig";
 
 	private final KinesisClient kinesisClient = KinesisClient.builder().build();
 	private final String id;

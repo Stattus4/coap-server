@@ -1,4 +1,4 @@
-package coapproxy.forward.service;
+package coapproxy.forward.service.config;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

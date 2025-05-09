@@ -49,19 +49,21 @@
 ```bash
 git clone https://github.com/Stattus4/coap-server.git
 ```
+
 ```bash
 cd coap-server/
 ```
+
 ```bash
 sudo docker compose -f docker/docker-compose.yml up
 ```
 
 #### Running the CLI (Command Line Interface) Applications
 
-Run an interactive shell in the running container:
+The CLI applications executable JARs are available within the container's working directory. It's possible to run them directly, or by running an interactive shell in the container first: 
 
 ```bash
-sudo docker exec -it coap-proxy-app /bin/bash
+sudo docker run -it --rm docker-coap-proxy-app /bin/bash
 ```
 
 The CLI applications executable JAR paths:
@@ -78,9 +80,11 @@ The CLI applications executable JAR paths:
 ```bash
 git clone https://github.com/Stattus4/coap-server.git
 ```
+
 ```bash
 cd coap-server/
 ```
+
 ```bash
 mvn clean package -Pcf-client -Pload-test
 ```
@@ -149,46 +153,110 @@ java -jar coap-proxy/target/coap-proxy-jar-with-dependencies.jar
 ```bash
 java -jar cf-client.jar -m GET 'coap://localhost/hello'
 ```
+
 ```bash
 java -jar cf-client.jar --non -m GET 'coap://localhost/hello'
 ```
+
 ```bash
 java -jar cf-client.jar -i 'identity' -s 'qwerty' -m GET 'coaps://localhost/hello'
 ```
+
 ```bash
 java -jar cf-client.jar --non -i 'identity' -s 'qwerty' -m GET 'coaps://localhost/hello'
 ```
+
 ```bash
 java -jar cf-client.jar --cert="certs/keyStore.jks#656E6450617373#656E6450617373#server" -m GET 'coaps://localhost/hello'
 ```
+
 ```bash
 java -jar cf-client.jar --non --cert="certs/keyStore.jks#656E6450617373#656E6450617373#server" -m GET 'coaps://localhost/hello'
 ```
 
 ### libCoAP - coap-client
 
-#### Linux Installation
+#### Containerized Setup (Docker)
+
+Download the image:
+
+```bash
+sudo docker pull obgm/libcoap:develop
+```
+
+Run an interactive shell in the container:
+
+```bash
+sudo docker run -it --rm obgm/libcoap:develop /bin/bash
+```
+ 
+To allow the `coap-client` to read the OSCORE configuration file, run the interactive shell in the container instead, as shown below:
+
+```bash
+sudo docker run -it --rm -v $HOME/coap-client-oscore.conf:/home/user/coap-client-oscore.conf obgm/libcoap:develop /bin/bash
+```
+
+Run the `coap-client`:
+
+```bash
+$ coap-client 
+coap-client v4.3.5 -- a small CoAP implementation
+Copyright (C) 2010-2024 Olaf Bergmann <bergmann@tzi.org> and others
+
+Build: v4.3.5-18-g9b0ec2da-dirty
+TLS Library: OpenSSL - runtime 3.3.0b-dev, libcoap built for 3.3.0b-dev
+(DTLS and TLS support; PSK, PKI, PKCS11, no RPK and no CID support)
+(Have OSCORE)
+(Have WebSockets)
+
+...
+```
+
+#### Linux Manual Installation
+
+Download the source code and build (no system-wide installation required):
 
 ```bash
 git clone https://github.com/obgm/libcoap.git
 ```
+
 ```bash
 cd libcoap/
 ```
+
 ```bash
 ./autogen.sh
 ```
+
 ```bash
 ./configure --disable-doxygen --disable-manpages
 ```
+
 ```bash
 make
 ```
+
+\- [https://libcoap.net/install.html](https://libcoap.net/install.html).
+
+Run the `coap-client`:
+
 ```bash
 cd examples/
 ```
 
-\- [https://libcoap.net/install.html](https://libcoap.net/install.html).
+```bash
+> ./coap-client
+coap-client v4.3.5 -- a small CoAP implementation
+Copyright (C) 2010-2025 Olaf Bergmann <bergmann@tzi.org> and others
+
+Build: v4.3.5-54-g440b645a-dirty
+TLS Library: TinyDTLS - runtime 0.8.6, libcoap built for 0.8.6
+(DTLS and no TLS support; PSK, no PKI, no PKCS11, RPK and no CID support)
+(Have OSCORE)
+(Have WebSockets)
+
+...
+```
 
 #### coap-client OSCORE Configuration
 
@@ -207,13 +275,15 @@ hkdf_alg,integer,-10
 #### Examples
 
 ```bash
-./coap-client -m get 'coap://localhost/hello'
+coap-client -m get 'coap://localhost/hello'
 ```
+
 ```bash
-./coap-client -m post 'coap://localhost/oscore-context'
+coap-client -m post 'coap://localhost/oscore-context'
 ```
+
 ```bash
-./coap-client -m get 'coap://localhost/oscore-hello' -E ~/coap-client-oscore.conf,/tmp/seq_file
+coap-client -m get 'coap://localhost/oscore-hello' -E ~/coap-client-oscore.conf,/tmp/seq_file
 ```
 
 

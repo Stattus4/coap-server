@@ -106,16 +106,28 @@ java -jar coap-proxy/target/coap-proxy-jar-with-dependencies.jar
 
 ## Environment Variables
 
-`COAPPROXY_SERVER_START` (Default value: `true`)
+`COAPPROXY_SERVER_START`  
+*(Default: `true`)*  
+Enables or disables the CoAP server on 5683/UDP port.
 
-`COAPPROXY_SECURE_SERVER_START` (Default value: `true`)
+`COAPPROXY_SECURE_SERVER_START`  
+*(Default: `true`)*  
+Enables or disables the CoAP + DTLS server on 5684/UDP port.
 
-`COAPPROXY_SECURE_SERVER_PSK_IDENTITY` (Default value: `identity`)
+`COAPPROXY_SECURE_SERVER_PSK_IDENTITY`  
+*(Default: `identity`)*  
+PSK identity used by the CoAP + DTLS server.
 
-`COAPPROXY_SECURE_SERVER_PSK_SECRET` (Default value: `qwerty`)
+`COAPPROXY_SECURE_SERVER_PSK_SECRET`  
+*(Default: `qwerty`)*  
+PSK secret used by the CoAP + DTLS server.
 
-**Warning:** The default values for `COAPPROXY_SECURE_SERVER_PSK_IDENTITY` and `COAPPROXY_SECURE_SERVER_PSK_SECRET` are provided for testing purposes only. In a production environment, it is crucial to generate and use strong, unique values.
+`COAPPROXY_DEFAULT_FORWARD_SERVICE`  
+*(**Required** — **No default value**)*  
+Specifies the default forwarding service. Value must correspond to a forward service defined in the `coap-proxy/src/main/resources/coapproxy/forward-service.json` file.
 
+> ⚠️ **Security Notice:**  
+> The variables `COAPPROXY_SECURE_SERVER_PSK_IDENTITY` and `COAPPROXY_SECURE_SERVER_PSK_SECRET` are only used when `COAPPROXY_SECURE_SERVER_START` is set to `true`. Their default values are provided for testing purposes only. **Do not use these defaults in production.**  
 
 ## CoAP Resources
 

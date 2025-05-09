@@ -10,6 +10,19 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
+  <repositories>
+    <repository>
+      <id>californium-snapshots</id>
+      <url>https://repo.eclipse.org/content/repositories/californium-snapshots/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <modules>
     <module>coap-proxy</module>
   </modules>
@@ -54,7 +67,7 @@
                     <artifactItem>
                       <groupId>org.eclipse.californium</groupId>
                       <artifactId>cf-client</artifactId>
-                      <version>1.0.0-M3</version>
+                      <version>4.0.0-SNAPSHOT</version>
                       <outputDirectory>${project.build.directory}</outputDirectory>
                       <destFileName>cf-client.jar</destFileName>
                     </artifactItem>

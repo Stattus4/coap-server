@@ -5,7 +5,9 @@ import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
+import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.CoapServer;
 import org.eclipse.californium.core.config.CoapConfig;
 import org.eclipse.californium.core.network.CoapEndpoint;
@@ -95,9 +97,17 @@ public class CfSecureServer extends CoapServer {
 	}
 
 	private void addResources() {
-		add(new MyIpResource(MyIpResource.RESOURCE_NAME, true));
-		add(new ResourceHello("hello"));
-		add(new ResourceInfo("info", this));
-		add(new ResourceReadings("readings"));
+		tryAddResource(() -> new MyIpResource(MyIpResource.RESOURCE_NAME, true), MyIpResource.class.getName());
+		tryAddResource(() -> new ResourceHello("hello"), ResourceHello.class.getName());
+		tryAddResource(() -> new ResourceInfo("info", this), ResourceInfo.class.getName());
+		tryAddResource(() -> new ResourceReadings("readings"), ResourceReadings.class.getName());
+	}
+
+	private void tryAddResource(Supplier<CoapResource> resourceSupplier, String resourceName) {
+		try {
+			add(resourceSupplier.get());
+		} catch (Exception e) {
+			LOGGER.error("Failed to add CoapResource [{}] ExceptionMessage: {}", resourceName, e.getMessage());
+		}
 	}
 }

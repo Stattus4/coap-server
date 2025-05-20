@@ -2,7 +2,9 @@ package coapproxy.server;
 
 import java.io.File;
 import java.net.InetSocketAddress;
+import java.util.function.Supplier;
 
+import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.CoapServer;
 import org.eclipse.californium.core.config.CoapConfig;
 import org.eclipse.californium.core.network.CoapEndpoint;
@@ -75,12 +77,21 @@ public class CfServer extends CoapServer {
 	}
 
 	private void addResources(HashMapCtxDB oscoreCtxDb) {
-		add(new MyIpResource(MyIpResource.RESOURCE_NAME, true));
-		add(new ResourceHello("hello"));
-		add(new ResourceInfo("info", this));
-		add(new ResourceOscoreContext("oscore-context", oscoreCtxDb));
-		add(new ResourceReadings("readings"));
-		add(new OscoreResourceHello("oscore-hello", true));
-		add(new OscoreResourceInfo("oscore-info", oscoreCtxDb));
+		tryAddResource(() -> new MyIpResource(MyIpResource.RESOURCE_NAME, true), MyIpResource.class.getName());
+		tryAddResource(() -> new ResourceHello("hello"), ResourceHello.class.getName());
+		tryAddResource(() -> new ResourceInfo("info", this), ResourceInfo.class.getName());
+		tryAddResource(() -> new ResourceOscoreContext("oscore-context", oscoreCtxDb),
+				ResourceOscoreContext.class.getName());
+		tryAddResource(() -> new ResourceReadings("readings"), ResourceReadings.class.getName());
+		tryAddResource(() -> new OscoreResourceHello("oscore-hello", true), OscoreResourceHello.class.getName());
+		tryAddResource(() -> new OscoreResourceInfo("oscore-info", oscoreCtxDb), OscoreResourceInfo.class.getName());
+	}
+
+	private void tryAddResource(Supplier<CoapResource> resourceSupplier, String resourceName) {
+		try {
+			add(resourceSupplier.get());
+		} catch (Exception e) {
+			LOGGER.error("Failed to add CoapResource [{}] ExceptionMessage: {}", resourceName, e.getMessage());
+		}
 	}
 }

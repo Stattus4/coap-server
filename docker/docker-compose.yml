@@ -15,4 +15,5 @@ services:
       COAPPROXY_SECURE_SERVER_START: true
       COAPPROXY_SECURE_SERVER_PSK_IDENTITY: "identity"
       COAPPROXY_SECURE_SERVER_PSK_SECRET: "qwerty"
+      COAPPROXY_DEFAULT_FORWARD_SERVICE: "aws-sqs-staging"
     restart: unless-stopped
